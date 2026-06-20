@@ -1,28 +1,28 @@
 const auth = {
     login: async function(e) {
         e.preventDefault();
-        const email = document.getElementById('log-email').value;
-        const password = document.getElementById('log-pass').value;
+        const email = document.getElementById('log-email').value.trim(); // Hapus spasi
+        const password = document.getElementById('log-pass').value.trim();
 
         try {
             const user = await app.apiPost('login', { email, password });
             localStorage.setItem('jicrew_user', JSON.stringify(user));
             app.state.user = user;
             app.navigate(user.role === 'Admin' ? 'admin' : 'freelancer');
-        } catch (err) {} // Error handled in app.apiPost
+        } catch (err) {} 
     },
 
     register: async function(e) {
         e.preventDefault();
         const data = {
             nama: document.getElementById('reg-nama').value,
-            email: document.getElementById('reg-email').value,
-            password: document.getElementById('reg-pass').value
+            email: document.getElementById('reg-email').value.trim(),
+            password: document.getElementById('reg-pass').value.trim()
         };
 
         try {
             await app.apiPost('register', data);
-            alert("Registrasi berhasil! Menunggu Approval Manajemen.");
+            alert("✨ Berhasil daftar! Tunggu Manajemen mengubah statusmu jadi 'Approved' di Database ya!");
             app.navigate('login');
         } catch (err) {}
     },
@@ -34,6 +34,5 @@ const auth = {
     }
 };
 
-// Event Listeners
 document.getElementById('form-login').addEventListener('submit', auth.login);
 document.getElementById('form-register').addEventListener('submit', auth.register);
