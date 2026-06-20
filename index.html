@@ -3,163 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JICrew Portal - Jejak Imani</title>
+    <title>JICrew | Jejak Imani</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Custom Color Config Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        gold: {
-                            100: '#FDF8E7',
-                            200: '#F9EBB6',
-                            500: '#D4AF37', /* Premium Classic Gold */
-                            600: '#B5952F',
-                            700: '#8E7525',
-                        },
-                        dark: '#1A1A1A' /* Elegan Black */
-                    }
+                        gold: { DEFAULT: '#D4AF37', light: '#FBF3D5', dark: '#A68A28' },
+                        dark: '#121212',
+                        surface: '#F8F9FA'
+                    },
+                    borderRadius: { '4xl': '2rem', '5xl': '2.5rem' }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-            background-color: #f3f4f6; 
-        }
-        .app-container { 
-            max-width: 480px; 
-            margin: 0 auto; 
-            background-color: #FAFAFA; 
-            min-height: 100vh; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.1); 
-            position: relative; 
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #E5E7EB; -webkit-tap-highlight-color: transparent; }
+        .app-container { max-width: 440px; margin: 0 auto; background-color: #F8F9FA; min-height: 100vh; position: relative; overflow-x: hidden; }
+        
+        /* Gen-Z UI Effects */
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.3); }
+        .btn-bounce:active { transform: scale(0.96); transition: transform 0.1s; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .bento-card { background: white; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); }
+        
         .loader { border-top-color: #D4AF37; -webkit-animation: spinner 1s linear infinite; animation: spinner 1s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Custom Scrollbar hide */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="text-gray-800">
 
-<div class="app-container" id="app">
+<div class="app-container shadow-2xl" id="app">
     
-    <!-- LOADING OVERLAY -->
-    <div id="loading" class="hidden absolute inset-0 bg-white bg-opacity-90 z-50 flex flex-col justify-center items-center">
+    <!-- LOADING SPINNER -->
+    <div id="loading" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col justify-center items-center">
         <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-100 h-14 w-14 mb-4 shadow-lg"></div>
-        <p class="text-gold-700 font-semibold text-sm animate-pulse">Memproses Data...</p>
+        <p class="text-dark font-bold text-sm tracking-wide">Tunggu sebentar... ✨</p>
     </div>
 
-    <!-- VIEW: LOGIN -->
-    <div id="view-login" class="view-section p-8 flex flex-col justify-center min-h-screen bg-white">
-        <div class="text-center mb-10">
-            <!-- Render Direct Link dari Google Drive -->
-            <img src="img/logo.png" alt="Jejak Imani Logo" class="h-28 mx-auto mb-6 object-contain">
-            <h1 class="text-2xl font-bold text-dark">Crew Portal</h1>
-            <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Handling</p>
+    <!-- 1. VIEW LOGIN -->
+    <div id="view-login" class="view-section p-8 flex flex-col justify-center min-h-screen bg-white relative overflow-hidden">
+        <!-- Dekorasi Background -->
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-gold rounded-full opacity-10 blur-3xl"></div>
+        <div class="absolute bottom-10 -left-20 w-64 h-64 bg-gray-400 rounded-full opacity-10 blur-3xl"></div>
+
+        <div class="text-center mb-10 z-10">
+            <!-- INLINE SVG LOGO (100% PASTI MUNCUL) -->
+            <div class="mx-auto w-20 h-20 bg-dark text-gold flex items-center justify-center rounded-3xl mb-6 shadow-xl shadow-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h1 class="text-3xl font-extrabold text-dark tracking-tight">JICrew Portal</h1>
+            <p class="text-sm text-gray-500 mt-2 font-medium">Jejak Imani Handling System</p>
         </div>
-        <form id="form-login" class="space-y-5">
+
+        <form id="form-login" class="space-y-4 z-10">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Alamat Email</label>
-                <input type="email" id="log-email" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all" required placeholder="email@contoh.com">
+                <input type="email" id="log-email" class="w-full p-4 bg-surface border-none rounded-2xl focus:ring-2 focus:ring-dark font-medium placeholder-gray-400 transition-all" required placeholder="Email kamu">
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
-                <input type="password" id="log-pass" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all" required placeholder="••••••••">
+                <input type="password" id="log-pass" class="w-full p-4 bg-surface border-none rounded-2xl focus:ring-2 focus:ring-dark font-medium placeholder-gray-400 transition-all" required placeholder="Password">
             </div>
-            <button type="submit" class="w-full bg-dark text-white hover:bg-black font-bold p-4 rounded-xl shadow-lg mt-6 transition-all border-b-4 border-gold-500">
-                Masuk
+            <button type="submit" class="btn-bounce w-full bg-dark text-white font-bold p-4 rounded-2xl shadow-lg mt-6">
+                Masuk Sekarang 🚀
             </button>
         </form>
-        <p class="text-center mt-8 text-sm text-gray-600">Belum tergabung? <a href="#" onclick="app.navigate('register')" class="text-gold-600 font-bold hover:text-gold-700">Daftar Tim</a></p>
+        <p class="text-center mt-8 text-sm text-gray-500 font-medium z-10">Belum punya akses? <a href="#" onclick="app.navigate('register')" class="text-gold font-bold">Daftar Tim</a></p>
     </div>
 
-    <!-- VIEW: REGISTER -->
-    <div id="view-register" class="view-section hidden p-8 flex flex-col justify-center min-h-screen bg-white">
-        <img src="img/logo.png" alt="Jejak Imani Logo" class="h-28 mx-auto mb-6 object-contain">
-        <h2 class="text-2xl font-bold text-dark mb-6 text-center">Registrasi Crew</h2>
-        <form id="form-register" class="space-y-4">
-            <div><label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap Sesuai KTP</label>
-                <input type="text" id="reg-nama" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500" required></div>
-            <div><label class="block text-sm font-semibold text-gray-700 mb-1">Email Aktif</label>
-                <input type="email" id="reg-email" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500" required></div>
-            <div><label class="block text-sm font-semibold text-gray-700 mb-1">Buat Password</label>
-                <input type="password" id="reg-pass" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500" required></div>
-            
-            <button type="submit" class="w-full bg-gold-500 text-dark hover:bg-gold-600 font-bold p-4 rounded-xl shadow-lg mt-4 transition-all">
-                Kirim Permohonan
-            </button>
-        </form>
-        <button onclick="app.navigate('login')" class="w-full mt-6 text-gray-500 font-semibold hover:text-dark">Kembali ke Login</button>
-    </div>
-
-    <!-- VIEW: PORTAL FREELANCER -->
-    <div id="view-freelancer" class="view-section hidden h-screen flex flex-col relative">
+    <!-- 2. VIEW REGISTER -->
+    <div id="view-register" class="view-section hidden p-8 flex flex-col justify-center min-h-screen bg-white relative">
+        <h2 class="text-3xl font-extrabold text-dark mb-2 text-center">Join JICrew 👋</h2>
+        <p class="text-center text-gray-500 text-sm mb-8">Isi data diri untuk verifikasi tim manajemen.</p>
         
-        <!-- Header Profil Hitam-Gold -->
-        <div class="bg-dark text-white p-6 rounded-b-3xl shadow-lg flex justify-between items-center z-10">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1 border-2 border-gold-500">
-                    <img src="https://drive.google.com/uc?export=view&id=1ADaHuVjVHr8tP1WuWy1q6f8bLGdFYU9a" class="h-full object-contain" alt="Icon">
-                </div>
+        <form id="form-register" class="space-y-4">
+            <input type="text" id="reg-nama" class="w-full p-4 bg-surface border-none rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Nama Lengkap KTP" required>
+            <input type="email" id="reg-email" class="w-full p-4 bg-surface border-none rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Email Aktif" required>
+            <input type="password" id="reg-pass" class="w-full p-4 bg-surface border-none rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Buat Password" required>
+            
+            <button type="submit" class="btn-bounce w-full bg-gold text-dark font-bold p-4 rounded-2xl shadow-lg shadow-gold-light mt-4">
+                Kirim Pendaftaran ✨
+            </button>
+        </form>
+        <button onclick="app.navigate('login')" class="w-full mt-6 text-gray-400 font-bold hover:text-dark">← Kembali</button>
+    </div>
+
+    <!-- 3. VIEW PORTAL FREELANCER (BENTO GRID STYLE) -->
+    <div id="view-freelancer" class="view-section hidden h-screen flex flex-col relative pb-24">
+        
+        <!-- Header Section -->
+        <div class="px-6 pt-10 pb-4">
+            <div class="flex justify-between items-center mb-6">
                 <div>
-                    <p class="text-xs text-gray-400">Selamat Bertugas,</p>
-                    <h2 class="font-bold text-lg text-white" id="user-name">Nama Crew</h2>
+                    <p class="text-sm text-gray-500 font-semibold mb-1">Welcome back,</p>
+                    <h2 class="font-extrabold text-2xl text-dark" id="user-name">Nama Crew 👋</h2>
+                </div>
+                <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-gold shadow-lg">
+                    <span class="font-bold">JI</span>
                 </div>
             </div>
-            <div class="text-right bg-gray-800 py-1.5 px-4 rounded-xl border border-gray-700">
-                <span class="text-[10px] text-gold-500 uppercase tracking-wider font-bold">Total Poin</span><br>
-                <span class="font-bold text-xl text-white" id="user-poin">0</span>
+
+            <!-- Bento Grid Stats -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bento-card p-5 bg-dark text-white relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-gold rounded-full opacity-20"></div>
+                    <p class="text-xs text-gray-400 font-medium mb-1">Total Poin</p>
+                    <h3 class="font-extrabold text-3xl text-gold" id="user-poin">0</h3>
+                </div>
+                <div class="bento-card p-5 flex flex-col justify-center items-center text-center">
+                    <span class="text-2xl mb-1">🎓</span>
+                    <p class="text-xs text-gray-500 font-bold">Status Crew</p>
+                    <span class="text-sm font-extrabold text-green-500">Active</span>
+                </div>
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-5 no-scrollbar pb-24">
+        <div class="flex-1 overflow-y-auto px-6 no-scrollbar">
             
-            <!-- SOP Accordion Elegan -->
-            <details class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-gold-500 mb-6 group transition-all">
-                <summary class="font-bold text-dark cursor-pointer flex justify-between items-center list-none">
-                    <span>📋 SOP & Aturan Bertugas</span>
-                    <span class="text-gold-500 group-open:rotate-180 transition-transform">▼</span>
-                </summary>
-                <div class="text-sm text-gray-600 mt-4 space-y-2 border-t pt-3">
-                    <p class="flex items-start"><span class="text-gold-500 mr-2">✦</span> Wajib datang 60 menit sebelum keberangkatan.</p>
-                    <p class="flex items-start"><span class="text-gold-500 mr-2">✦</span> Gunakan seragam resmi Jejak Imani dengan rapi.</p>
-                    <p class="flex items-start"><span class="text-gold-500 mr-2">✦</span> Input absensi dan laporan cashflow tepat waktu.</p>
-                </div>
-            </details>
+            <!-- Quick SOP -->
+            <div class="bento-card p-5 mb-8 bg-gold-light">
+                <h4 class="font-bold text-dark mb-3 flex items-center gap-2"><span>📌</span> Aturan Main</h4>
+                <ul class="text-sm text-dark font-medium space-y-2 opacity-80">
+                    <li>• Hadir 60 menit sebelum keberangkatan.</li>
+                    <li>• Wajib berseragam rapi (No Jeans).</li>
+                </ul>
+            </div>
 
-            <!-- Jadwal Section -->
-            <div class="flex justify-between items-end mb-4">
-                <h3 class="font-bold text-xl text-dark">Jadwal Tersedia</h3>
-                <button onclick="portal.loadJadwal()" class="text-xs font-bold text-gold-600 hover:text-gold-700">↻ Refresh</button>
+            <!-- Tugas List -->
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-extrabold text-xl text-dark">Tugas Available 🔥</h3>
+                <button onclick="portal.loadJadwal()" class="btn-bounce bg-white shadow-sm p-2 rounded-full text-xs font-bold text-dark">↻ Refresh</button>
             </div>
             
             <div id="list-jadwal" class="space-y-4">
-                <!-- Data di-render lewat JS -->
+                <!-- Injected via JS -->
             </div>
         </div>
 
-        <!-- Bottom Nav Bar Mobile Elegan -->
-        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around p-2 pb-5 shadow-[0_-4px_15px_rgba(0,0,0,0.03)] z-20 rounded-t-3xl">
-            <button class="flex flex-col items-center w-16 pt-2 text-gold-600">
-                <span class="text-2xl mb-1">🕋</span>
-                <span class="text-[10px] font-bold">Tugas</span>
+        <!-- Glassmorphism Bottom Nav -->
+        <div class="absolute bottom-6 left-6 right-6 glass-nav rounded-4xl flex justify-around p-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] z-20">
+            <button class="btn-bounce flex flex-col items-center w-16 text-dark">
+                <div class="bg-surface p-2 rounded-2xl"><span class="text-xl">🕋</span></div>
+                <span class="text-[10px] font-bold mt-1">Tugas</span>
             </button>
-            <button class="flex flex-col items-center w-16 pt-2 text-gray-400 hover:text-dark transition-colors" onclick="alert('Fitur Laporan dalam pengembangan')">
-                <span class="text-2xl mb-1">📝</span>
-                <span class="text-[10px] font-semibold">Laporan</span>
+            <button class="btn-bounce flex flex-col items-center w-16 text-gray-400" onclick="alert('Fitur Laporan segera hadir! 🚀')">
+                <div class="p-2"><span class="text-xl opacity-80">📝</span></div>
+                <span class="text-[10px] font-bold mt-1">Laporan</span>
             </button>
-            <button class="flex flex-col items-center w-16 pt-2 text-gray-400 hover:text-red-500 transition-colors" onclick="auth.logout()">
-                <span class="text-2xl mb-1">🚪</span>
-                <span class="text-[10px] font-semibold">Keluar</span>
+            <button class="btn-bounce flex flex-col items-center w-16 text-gray-400" onclick="auth.logout()">
+                <div class="p-2"><span class="text-xl opacity-80">🚪</span></div>
+                <span class="text-[10px] font-bold mt-1">Keluar</span>
             </button>
         </div>
     </div>
