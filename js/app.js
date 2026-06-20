@@ -29,14 +29,12 @@ const app = {
         document.getElementById('loading').style.display = show ? 'flex' : 'none';
     },
 
-    // Arsitektur Fetch menghindari CORS Block via Vercel (Kirim text/plain body)
     apiPost: async function(action, data) {
         this.showLoading(true);
         try {
             const response = await fetch(CONFIG.API_URL, {
                 method: 'POST',
-                // Trik penting: agar tidak mentrigger OPTIONS preflight yang strict
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                // Hapus header Content-Type agar browser otomatis mendeteksi plain text tanpa preflight OPTIONS
                 body: JSON.stringify({ action: action, data: data })
             });
             const result = await response.json();
@@ -45,11 +43,16 @@ const app = {
             return result.data;
         } catch (error) {
             this.showLoading(false);
-            alert("Error: " + error.message);
+            // Memberikan pesan error yang lebih jelas jika gagal koneksi
+            if (error.message === 'Failed to fetch') {
+                alert("Koneksi ke server gagal. Pastikan link API benar dan Deployment Apps Script diset ke 'Anyone'.");
+            } else {
+                alert("Error: " + error.message);
+            }
             throw error;
         }
     },
-
+    
     apiGet: async function(action) {
         this.showLoading(true);
         try {
