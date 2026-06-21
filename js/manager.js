@@ -13,47 +13,52 @@ const manager = {
     spinner: () => `<div class="flex justify-center py-6"><div class="animate-spin rounded-full h-8 w-8 border-4 border-gold border-t-transparent"></div></div>`,
     emptyMsg: (icon, msg) => `<div class="bento-card text-center py-8"><i data-lucide="${icon}" class="w-10 h-10 text-gray-300 mx-auto mb-3"></i><p class="text-sm text-gray-500 font-bold">${msg}</p></div>`,
 
-    loadApproval: async function() {
+    loadApproval: function() {
         const cu = document.getElementById('list-pending-users');
         const ca = document.getElementById('list-pending-apply');
-        cu.innerHTML = ca.innerHTML = this.spinner();
-        try {
-            const [users, applies] = await Promise.all([
-                app.apiGet('getPendingUsers'),
-                app.apiGet('getPendingApply')
-            ]);
+        if (!app.cache['approval']) { cu.innerHTML = this.spinner(); ca.innerHTML = ''; }
+        // Gabungkan 2 fetch dalam satu cache key
+        if (app.cache['approval']) this.renderApproval(app.cache['approval']);
+        Promise.all([app.apiGet('getPendingUsers', true), app.apiGet('getPendingApply', true)])
+            .then(([users, applies]) => {
+                const combined = { users, applies };
+                app.cache['approval'] = combined;
+                this.renderApproval(combined);
+            }).catch(()=>{});
+    },
 
-            cu.innerHTML = users.length ? '' : `<p class="text-xs text-gray-400 font-medium px-2">Tidak ada pendaftar baru.</p>`;
-            users.forEach(u => {
-                cu.innerHTML += `
-                <div class="bento-card p-4 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></div>
-                        <div><h4 class="font-bold text-dark text-sm">${u.nama}</h4><p class="text-xs text-gray-400">${u.email}</p></div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="manager.decideUser('${u.id}','approve')" class="btn-bounce bg-green-500 text-white p-2.5 rounded-xl"><i data-lucide="check" class="w-4 h-4"></i></button>
-                        <button onclick="manager.decideUser('${u.id}','reject')" class="btn-bounce bg-red-100 text-red-500 p-2.5 rounded-xl"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    </div>
-                </div>`;
-            });
-
-            ca.innerHTML = applies.length ? '' : `<p class="text-xs text-gray-400 font-medium px-2">Tidak ada apply baru.</p>`;
-            applies.forEach(a => {
-                ca.innerHTML += `
-                <div class="bento-card p-4 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-gray-400"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
-                        <div><h4 class="font-bold text-dark text-sm">${a.nama}</h4><p class="text-xs text-gray-400">${a.tugas}</p></div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="manager.decideApply('${a.applyId}','approve')" class="btn-bounce bg-green-500 text-white p-2.5 rounded-xl"><i data-lucide="check" class="w-4 h-4"></i></button>
-                        <button onclick="manager.decideApply('${a.applyId}','reject')" class="btn-bounce bg-red-100 text-red-500 p-2.5 rounded-xl"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    </div>
-                </div>`;
-            });
-            app.renderIcons();
-        } catch(e) {}
+    renderApproval: function(d) {
+        const cu = document.getElementById('list-pending-users');
+        const ca = document.getElementById('list-pending-apply');
+        cu.innerHTML = d.users.length ? '' : `<p class="text-xs text-gray-400 font-medium px-2">Tidak ada pendaftar baru.</p>`;
+        d.users.forEach(u => {
+            cu.innerHTML += `
+            <div class="bento-card p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></div>
+                    <div><h4 class="font-bold text-dark text-sm">${u.nama}</h4><p class="text-xs text-gray-400">${u.email}</p></div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="manager.decideUser('${u.id}','approve')" class="btn-bounce bg-green-500 text-white p-2.5 rounded-xl"><i data-lucide="check" class="w-4 h-4"></i></button>
+                    <button onclick="manager.decideUser('${u.id}','reject')" class="btn-bounce bg-red-100 text-red-500 p-2.5 rounded-xl"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+            </div>`;
+        });
+        ca.innerHTML = d.applies.length ? '' : `<p class="text-xs text-gray-400 font-medium px-2">Tidak ada apply baru.</p>`;
+        d.applies.forEach(a => {
+            ca.innerHTML += `
+            <div class="bento-card p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-gray-400"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
+                    <div><h4 class="font-bold text-dark text-sm">${a.nama}</h4><p class="text-xs text-gray-400">${a.tugas}</p></div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="manager.decideApply('${a.applyId}','approve')" class="btn-bounce bg-green-500 text-white p-2.5 rounded-xl"><i data-lucide="check" class="w-4 h-4"></i></button>
+                    <button onclick="manager.decideApply('${a.applyId}','reject')" class="btn-bounce bg-red-100 text-red-500 p-2.5 rounded-xl"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+            </div>`;
+        });
+        app.renderIcons();
     },
 
     decideUser: async function(userId, decision) {
@@ -63,30 +68,32 @@ const manager = {
         try { await app.apiPost('approveApply', { applyId, decision }); this.loadApproval(); } catch(e){}
     },
 
-    loadReview: async function() {
+    loadReview: function() {
         const c = document.getElementById('list-review');
-        c.innerHTML = this.spinner();
-        try {
-            const data = await app.apiGet('getTasksToReview');
-            c.innerHTML = data.length ? '' : this.emptyMsg('party-popper', "Semua tugas sudah dinilai!");
-            data.forEach(it => {
-                c.innerHTML += `
-                <div class="bento-card p-5">
-                    <h4 class="font-extrabold text-dark text-base">${it.nama}</h4>
-                    <p class="text-xs text-gray-400 font-medium mb-3 flex items-center gap-1.5"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i> ${it.tugas}</p>
-                    <div class="bg-surface rounded-xl p-3 text-xs font-medium space-y-1.5 mb-4">
-                        <p class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-500"></i> Absen: ${it.waktuAbsen}</p>
-                        <p class="flex items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5"></i> Cashflow: ${it.cashflow ? 'Rp '+Number(it.cashflow).toLocaleString('id-ID') : '-'}</p>
-                        <p class="flex items-start gap-1.5"><i data-lucide="sticky-note" class="w-3.5 h-3.5 mt-0.5"></i> ${it.catatan || '-'}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="number" id="poin-${it.laporanId}" class="flex-1 p-3 bg-surface rounded-xl font-bold text-center" placeholder="Poin">
-                        <button onclick="manager.submitNilai('${it.laporanId}')" class="btn-bounce bg-gold text-dark font-bold px-5 rounded-xl text-sm flex items-center gap-1.5"><i data-lucide="award" class="w-4 h-4"></i> Nilai</button>
-                    </div>
-                </div>`;
-            });
-            app.renderIcons();
-        } catch(e) {}
+        if (!app.cache['review']) c.innerHTML = this.spinner();
+        app.smartFetch('review', 'getTasksToReview', (data) => this.renderReview(c, data));
+    },
+
+    renderReview: function(c, data) {
+        if (!data || !data.length) { c.innerHTML = this.emptyMsg('party-popper', "Semua tugas sudah dinilai!"); app.renderIcons(); return; }
+        c.innerHTML = '';
+        data.forEach(it => {
+            c.innerHTML += `
+            <div class="bento-card p-5">
+                <h4 class="font-extrabold text-dark text-base">${it.nama}</h4>
+                <p class="text-xs text-gray-400 font-medium mb-3 flex items-center gap-1.5"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i> ${it.tugas}</p>
+                <div class="bg-surface rounded-xl p-3 text-xs font-medium space-y-1.5 mb-4">
+                    <p class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-500"></i> Absen: ${it.waktuAbsen}</p>
+                    <p class="flex items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5"></i> Cashflow: ${it.cashflow ? 'Rp '+Number(it.cashflow).toLocaleString('id-ID') : '-'}</p>
+                    <p class="flex items-start gap-1.5"><i data-lucide="sticky-note" class="w-3.5 h-3.5 mt-0.5"></i> ${it.catatan || '-'}</p>
+                </div>
+                <div class="flex gap-2">
+                    <input type="number" id="poin-${it.laporanId}" class="flex-1 p-3 bg-surface rounded-xl font-bold text-center" placeholder="Poin">
+                    <button onclick="manager.submitNilai('${it.laporanId}')" class="btn-bounce bg-gold text-dark font-bold px-5 rounded-xl text-sm flex items-center gap-1.5"><i data-lucide="award" class="w-4 h-4"></i> Nilai</button>
+                </div>
+            </div>`;
+        });
+        app.renderIcons();
     },
 
     submitNilai: async function(laporanId) {
@@ -99,27 +106,29 @@ const manager = {
         } catch(e) {}
     },
 
-    loadAllJadwal: async function() {
+    loadAllJadwal: function() {
         const c = document.getElementById('list-all-jadwal');
-        c.innerHTML = this.spinner();
-        try {
-            const data = await app.apiGet('getAllJadwal');
-            c.innerHTML = data.length ? '' : this.emptyMsg('calendar-plus', "Belum ada jadwal. Tambah yuk!");
-            data.forEach(it => {
-                let tgl = new Date(it.tanggal).toLocaleDateString('id-ID', {day:'numeric',month:'short',year:'numeric'});
-                let statusColor = it.status === 'Tersedia' ? 'bg-green-100 text-green-600' : 'bg-gray-200 text-gray-500';
-                c.innerHTML += `
-                <div class="bento-card p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-extrabold text-dark text-base">${it.tugas}</h4>
-                        <span class="${statusColor} text-[10px] font-extrabold px-3 py-1.5 rounded-full">${it.status}</span>
-                    </div>
-                    <p class="text-xs text-gray-400 font-medium flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${tgl} • ${it.jam}</p>
-                    <p class="text-xs text-gray-400 font-medium flex items-center gap-1.5 mt-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${it.lokasi} • Kuota: ${it.kuota}</p>
-                </div>`;
-            });
-            app.renderIcons();
-        } catch(e) {}
+        if (!app.cache['allJadwal']) c.innerHTML = this.spinner();
+        app.smartFetch('allJadwal', 'getAllJadwal', (data) => this.renderAllJadwal(c, data));
+    },
+
+    renderAllJadwal: function(c, data) {
+        if (!data || !data.length) { c.innerHTML = this.emptyMsg('calendar-plus', "Belum ada jadwal. Tambah yuk!"); app.renderIcons(); return; }
+        c.innerHTML = '';
+        data.forEach(it => {
+            let tgl = new Date(it.tanggal).toLocaleDateString('id-ID', {day:'numeric',month:'short',year:'numeric'});
+            let statusColor = it.status === 'Tersedia' ? 'bg-green-100 text-green-600' : 'bg-gray-200 text-gray-500';
+            c.innerHTML += `
+            <div class="bento-card p-5">
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="font-extrabold text-dark text-base">${it.tugas}</h4>
+                    <span class="${statusColor} text-[10px] font-extrabold px-3 py-1.5 rounded-full">${it.status}</span>
+                </div>
+                <p class="text-xs text-gray-400 font-medium flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${tgl} • ${it.jam}</p>
+                <p class="text-xs text-gray-400 font-medium flex items-center gap-1.5 mt-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${it.lokasi} • Kuota: ${it.kuota}</p>
+            </div>`;
+        });
+        app.renderIcons();
     },
 
     openAddJadwal: function() {
