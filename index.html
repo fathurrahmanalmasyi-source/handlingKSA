@@ -24,6 +24,8 @@
         .modal-bg { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
         .tab-btn.active { color: #121212; }
         .tab-btn.active .tab-icon { background: #F8F9FA; }
+        /* Standar ukuran icon */
+        [data-lucide] { width: 20px; height: 20px; stroke-width: 2; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -32,7 +34,7 @@
     <!-- LOADING -->
     <div id="loading" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm z-[100] flex flex-col justify-center items-center">
         <div class="loader rounded-full border-4 border-gray-100 h-14 w-14 mb-4"></div>
-        <p class="text-dark font-bold text-sm">Tunggu sebentar... ✨</p>
+        <p class="text-dark font-bold text-sm">Tunggu sebentar...</p>
     </div>
 
     <!-- ============ LOGIN ============ -->
@@ -41,7 +43,7 @@
 
         <div class="text-center mb-8 z-10">
             <div id="login-logo" class="mx-auto w-20 h-20 bg-dark text-gold flex items-center justify-center rounded-3xl mb-6 shadow-xl transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <i data-lucide="compass" class="w-10 h-10"></i>
             </div>
             <h1 class="text-3xl font-extrabold text-dark">JICrew Portal</h1>
             <p id="login-subtitle" class="text-sm text-gray-500 mt-2 font-medium">Jejak Imani Handling System</p>
@@ -50,29 +52,39 @@
         <!-- TOGGLE SWITCH -->
         <div class="bg-surface p-1.5 rounded-2xl flex relative mb-6 z-10 shadow-inner">
             <div id="toggle-slider" class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-gold rounded-xl shadow-md transition-all duration-300"></div>
-            <button onclick="auth.setLoginMode('freelancer')" id="mode-freelancer" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-dark">🕋 Freelancer</button>
-            <button onclick="auth.setLoginMode('manajemen')" id="mode-manajemen" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-gray-400">⚙️ Manajemen</button>
+            <button onclick="auth.setLoginMode('freelancer')" id="mode-freelancer" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-dark flex items-center justify-center gap-2"><i data-lucide="user-round" class="w-4 h-4"></i> Freelancer</button>
+            <button onclick="auth.setLoginMode('manajemen')" id="mode-manajemen" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-gray-400 flex items-center justify-center gap-2"><i data-lucide="settings-2" class="w-4 h-4"></i> Manajemen</button>
         </div>
 
         <form id="form-login" class="space-y-4 z-10">
-            <input type="email" id="log-email" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Email kamu">
-            <input type="password" id="log-pass" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Password">
-            <button type="submit" id="login-btn" class="btn-bounce w-full bg-dark text-white font-bold p-4 rounded-2xl shadow-lg mt-6 transition-colors duration-300">Masuk Sekarang 🚀</button>
+            <div class="relative">
+                <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                <input type="email" id="log-email" class="w-full p-4 pl-12 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Email kamu">
+            </div>
+            <div class="relative">
+                <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                <input type="password" id="log-pass" class="w-full p-4 pl-12 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Password">
+            </div>
+            <button type="submit" id="login-btn" class="btn-bounce w-full bg-dark text-white font-bold p-4 rounded-2xl shadow-lg mt-6 transition-colors duration-300 flex items-center justify-center gap-2">Masuk Sekarang <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </form>
 
         <p id="login-register-link" class="text-center mt-8 text-sm text-gray-500 font-medium z-10">Belum punya akses? <a href="#" onclick="app.navigate('register')" class="text-gold font-bold">Daftar Tim</a></p>
     </div>
+
     <!-- ============ REGISTER ============ -->
     <div id="view-register" class="view-section hidden p-8 flex flex-col justify-center min-h-screen bg-white">
-        <h2 class="text-3xl font-extrabold text-dark mb-2 text-center">Join JICrew 👋</h2>
-        <p class="text-center text-gray-500 text-sm mb-8">Isi data untuk verifikasi manajemen.</p>
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-gold-light text-gold-dark flex items-center justify-center rounded-2xl mb-4"><i data-lucide="user-plus" class="w-8 h-8"></i></div>
+            <h2 class="text-3xl font-extrabold text-dark">Join JICrew</h2>
+            <p class="text-gray-500 text-sm mt-2">Isi data untuk verifikasi manajemen.</p>
+        </div>
         <form id="form-register" class="space-y-4">
-            <input type="text" id="reg-nama" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Nama Lengkap KTP" required>
-            <input type="email" id="reg-email" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Email Aktif" required>
-            <input type="password" id="reg-pass" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Buat Password" required>
-            <button type="submit" class="btn-bounce w-full bg-gold text-dark font-bold p-4 rounded-2xl shadow-lg mt-4">Kirim Pendaftaran ✨</button>
+            <div class="relative"><i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i><input type="text" id="reg-nama" class="w-full p-4 pl-12 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Nama Lengkap KTP" required></div>
+            <div class="relative"><i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i><input type="email" id="reg-email" class="w-full p-4 pl-12 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Email Aktif" required></div>
+            <div class="relative"><i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i><input type="password" id="reg-pass" class="w-full p-4 pl-12 bg-surface rounded-2xl focus:ring-2 focus:ring-gold font-medium" placeholder="Buat Password" required></div>
+            <button type="submit" class="btn-bounce w-full bg-gold text-dark font-bold p-4 rounded-2xl shadow-lg mt-4 flex items-center justify-center gap-2">Kirim Pendaftaran <i data-lucide="send" class="w-5 h-5"></i></button>
         </form>
-        <button onclick="app.navigate('login')" class="w-full mt-6 text-gray-400 font-bold">← Kembali</button>
+        <button onclick="app.navigate('login')" class="w-full mt-6 text-gray-400 font-bold flex items-center justify-center gap-1"><i data-lucide="chevron-left" class="w-4 h-4"></i> Kembali</button>
     </div>
 
     <!-- ============ FREELANCER ============ -->
@@ -81,18 +93,18 @@
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <p class="text-sm text-gray-500 font-semibold">Welcome back,</p>
-                    <h2 class="font-extrabold text-2xl text-dark" id="user-name">Crew 👋</h2>
+                    <h2 class="font-extrabold text-2xl text-dark" id="user-name">Crew</h2>
                 </div>
-                <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-gold shadow-lg font-bold">JI</div>
+                <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-gold shadow-lg"><i data-lucide="user-round" class="w-6 h-6"></i></div>
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div class="bento-card p-5 bg-dark text-white relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-gold rounded-full opacity-20"></div>
-                    <p class="text-xs text-gray-400 mb-1">Total Poin</p>
+                    <div class="flex items-center gap-1.5 mb-1"><i data-lucide="award" class="w-4 h-4 text-gold"></i><p class="text-xs text-gray-400">Total Poin</p></div>
                     <h3 class="font-extrabold text-3xl text-gold" id="user-poin">0</h3>
                 </div>
                 <div class="bento-card p-5 flex flex-col justify-center items-center text-center">
-                    <span class="text-2xl mb-1">🎓</span>
+                    <i data-lucide="badge-check" class="w-7 h-7 text-green-500 mb-1"></i>
                     <p class="text-xs text-gray-500 font-bold">Status</p>
                     <span class="text-sm font-extrabold text-green-500">Active</span>
                 </div>
@@ -100,38 +112,36 @@
         </div>
 
         <div class="flex-1 overflow-y-auto px-6 no-scrollbar" id="fl-content">
-            <!-- TAB: TUGAS AVAILABLE -->
             <div id="fl-tab-tugas">
                 <div class="bento-card p-5 mb-6 bg-gold-light">
-                    <h4 class="font-bold text-dark mb-3 flex items-center gap-2"><span>📌</span> Aturan Main</h4>
+                    <h4 class="font-bold text-dark mb-3 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-5 h-5 text-gold-dark"></i> Aturan Main</h4>
                     <ul class="text-sm text-dark font-medium space-y-2 opacity-80">
-                        <li>• Hadir 60 menit sebelum keberangkatan.</li>
-                        <li>• Wajib berseragam rapi (No Jeans).</li>
+                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold-dark mt-0.5"></i> Hadir 60 menit sebelum keberangkatan.</li>
+                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold-dark mt-0.5"></i> Wajib berseragam rapi (No Jeans).</li>
                     </ul>
                 </div>
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-extrabold text-xl text-dark">Tugas Available 🔥</h3>
-                    <button onclick="portal.loadJadwal()" class="btn-bounce bg-white shadow-sm p-2 px-3 rounded-full text-xs font-bold">↻</button>
+                    <h3 class="font-extrabold text-xl text-dark">Tugas Available</h3>
+                    <button onclick="portal.loadJadwal()" class="btn-bounce bg-white shadow-sm p-2.5 rounded-full text-dark"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
                 </div>
                 <div id="list-jadwal" class="space-y-4"></div>
             </div>
 
-            <!-- TAB: TUGAS SAYA -->
             <div id="fl-tab-mytask" class="hidden">
-                <h3 class="font-extrabold text-xl text-dark mb-4 mt-2">Tugas Saya 📋</h3>
+                <h3 class="font-extrabold text-xl text-dark mb-4 mt-2">Tugas Saya</h3>
                 <div id="list-mytask" class="space-y-4"></div>
             </div>
         </div>
 
         <div class="absolute bottom-6 left-6 right-6 glass-nav rounded-4xl flex justify-around p-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] z-20">
             <button onclick="portal.switchTab('tugas')" id="ftab-tugas" class="tab-btn active btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="tab-icon p-2 rounded-2xl"><span class="text-xl">🕋</span></div><span class="text-[10px] font-bold mt-1">Tugas</span>
+                <div class="tab-icon p-2 rounded-2xl"><i data-lucide="layout-grid"></i></div><span class="text-[10px] font-bold mt-1">Tugas</span>
             </button>
             <button onclick="portal.switchTab('mytask')" id="ftab-mytask" class="tab-btn btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="tab-icon p-2 rounded-2xl"><span class="text-xl">📝</span></div><span class="text-[10px] font-bold mt-1">Tugasku</span>
+                <div class="tab-icon p-2 rounded-2xl"><i data-lucide="clipboard-check"></i></div><span class="text-[10px] font-bold mt-1">Tugasku</span>
             </button>
             <button onclick="auth.logout()" class="btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="p-2"><span class="text-xl">🚪</span></div><span class="text-[10px] font-bold mt-1">Keluar</span>
+                <div class="p-2"><i data-lucide="log-out"></i></div><span class="text-[10px] font-bold mt-1">Keluar</span>
             </button>
         </div>
     </div>
@@ -142,32 +152,29 @@
             <div class="flex justify-between items-center mb-2">
                 <div>
                     <p class="text-sm text-gray-500 font-semibold">Control Panel</p>
-                    <h2 class="font-extrabold text-2xl text-dark">Manajemen ⚙️</h2>
+                    <h2 class="font-extrabold text-2xl text-dark">Manajemen</h2>
                 </div>
-                <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center text-dark shadow-lg font-bold">AD</div>
+                <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center text-dark shadow-lg"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
             </div>
         </div>
 
         <div class="flex-1 overflow-y-auto px-6 no-scrollbar">
-            <!-- TAB: APPROVAL -->
             <div id="ad-tab-approval">
-                <h3 class="font-extrabold text-lg text-dark mb-3 mt-2">👤 Pendaftar Baru</h3>
+                <h3 class="font-extrabold text-lg text-dark mb-3 mt-2 flex items-center gap-2"><i data-lucide="user-round-plus" class="w-5 h-5"></i> Pendaftar Baru</h3>
                 <div id="list-pending-users" class="space-y-3 mb-8"></div>
-                <h3 class="font-extrabold text-lg text-dark mb-3">📥 Apply Tugas</h3>
+                <h3 class="font-extrabold text-lg text-dark mb-3 flex items-center gap-2"><i data-lucide="inbox" class="w-5 h-5"></i> Apply Tugas</h3>
                 <div id="list-pending-apply" class="space-y-3"></div>
             </div>
 
-            <!-- TAB: PENILAIAN -->
             <div id="ad-tab-nilai" class="hidden">
-                <h3 class="font-extrabold text-xl text-dark mb-4 mt-2">Penilaian Tugas 🏆</h3>
+                <h3 class="font-extrabold text-xl text-dark mb-4 mt-2">Penilaian Tugas</h3>
                 <div id="list-review" class="space-y-4"></div>
             </div>
 
-            <!-- TAB: JADWAL -->
             <div id="ad-tab-jadwal" class="hidden">
                 <div class="flex justify-between items-center mb-4 mt-2">
-                    <h3 class="font-extrabold text-xl text-dark">Kelola Jadwal 📅</h3>
-                    <button onclick="manager.openAddJadwal()" class="btn-bounce bg-dark text-white px-4 py-2 rounded-xl text-xs font-bold">+ Tambah</button>
+                    <h3 class="font-extrabold text-xl text-dark">Kelola Jadwal</h3>
+                    <button onclick="manager.openAddJadwal()" class="btn-bounce bg-dark text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5"><i data-lucide="plus" class="w-4 h-4"></i> Tambah</button>
                 </div>
                 <div id="list-all-jadwal" class="space-y-4"></div>
             </div>
@@ -175,21 +182,21 @@
 
         <div class="absolute bottom-6 left-6 right-6 glass-nav rounded-4xl flex justify-around p-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] z-20">
             <button onclick="manager.switchTab('approval')" id="atab-approval" class="tab-btn active btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="tab-icon p-2 rounded-2xl"><span class="text-xl">✅</span></div><span class="text-[10px] font-bold mt-1">Approval</span>
+                <div class="tab-icon p-2 rounded-2xl"><i data-lucide="circle-check-big"></i></div><span class="text-[10px] font-bold mt-1">Approval</span>
             </button>
             <button onclick="manager.switchTab('nilai')" id="atab-nilai" class="tab-btn btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="tab-icon p-2 rounded-2xl"><span class="text-xl">🏆</span></div><span class="text-[10px] font-bold mt-1">Nilai</span>
+                <div class="tab-icon p-2 rounded-2xl"><i data-lucide="award"></i></div><span class="text-[10px] font-bold mt-1">Nilai</span>
             </button>
             <button onclick="manager.switchTab('jadwal')" id="atab-jadwal" class="tab-btn btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="tab-icon p-2 rounded-2xl"><span class="text-xl">📅</span></div><span class="text-[10px] font-bold mt-1">Jadwal</span>
+                <div class="tab-icon p-2 rounded-2xl"><i data-lucide="calendar-days"></i></div><span class="text-[10px] font-bold mt-1">Jadwal</span>
             </button>
             <button onclick="auth.logout()" class="btn-bounce flex flex-col items-center w-16 text-gray-400">
-                <div class="p-2"><span class="text-xl">🚪</span></div><span class="text-[10px] font-bold mt-1">Keluar</span>
+                <div class="p-2"><i data-lucide="log-out"></i></div><span class="text-[10px] font-bold mt-1">Keluar</span>
             </button>
         </div>
     </div>
 
-    <!-- ============ MODAL UNIVERSAL ============ -->
+    <!-- ============ MODAL ============ -->
     <div id="modal" class="hidden fixed inset-0 modal-bg z-[90] flex items-end justify-center p-0">
         <div class="bg-white w-full max-w-[440px] rounded-t-4xl p-6 pb-10 animate-[slideUp_0.3s]">
             <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5"></div>
@@ -202,6 +209,8 @@
 
 <style>@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }</style>
 
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/app.js"></script>
 <script src="js/auth.js"></script>
