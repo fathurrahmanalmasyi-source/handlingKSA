@@ -37,22 +37,31 @@
 
     <!-- ============ LOGIN ============ -->
     <div id="view-login" class="view-section p-8 flex flex-col justify-center min-h-screen bg-white relative overflow-hidden">
-        <div class="absolute -top-20 -right-20 w-64 h-64 bg-gold rounded-full opacity-10 blur-3xl"></div>
-        <div class="text-center mb-10 z-10">
-            <div class="mx-auto w-20 h-20 bg-dark text-gold flex items-center justify-center rounded-3xl mb-6 shadow-xl">
+        <div id="login-blob" class="absolute -top-20 -right-20 w-64 h-64 bg-gold rounded-full opacity-10 blur-3xl transition-colors duration-300"></div>
+
+        <div class="text-center mb-8 z-10">
+            <div id="login-logo" class="mx-auto w-20 h-20 bg-dark text-gold flex items-center justify-center rounded-3xl mb-6 shadow-xl transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <h1 class="text-3xl font-extrabold text-dark">JICrew Portal</h1>
-            <p class="text-sm text-gray-500 mt-2 font-medium">Jejak Imani Handling System</p>
+            <p id="login-subtitle" class="text-sm text-gray-500 mt-2 font-medium">Jejak Imani Handling System</p>
         </div>
+
+        <!-- TOGGLE SWITCH -->
+        <div class="bg-surface p-1.5 rounded-2xl flex relative mb-6 z-10 shadow-inner">
+            <div id="toggle-slider" class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-gold rounded-xl shadow-md transition-all duration-300"></div>
+            <button onclick="auth.setLoginMode('freelancer')" id="mode-freelancer" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-dark">🕋 Freelancer</button>
+            <button onclick="auth.setLoginMode('manajemen')" id="mode-manajemen" class="flex-1 py-3 text-center font-bold text-sm rounded-xl z-10 transition-colors text-gray-400">⚙️ Manajemen</button>
+        </div>
+
         <form id="form-login" class="space-y-4 z-10">
             <input type="email" id="log-email" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Email kamu">
             <input type="password" id="log-pass" class="w-full p-4 bg-surface rounded-2xl focus:ring-2 focus:ring-dark font-medium" required placeholder="Password">
-            <button type="submit" class="btn-bounce w-full bg-dark text-white font-bold p-4 rounded-2xl shadow-lg mt-6">Masuk Sekarang 🚀</button>
+            <button type="submit" id="login-btn" class="btn-bounce w-full bg-dark text-white font-bold p-4 rounded-2xl shadow-lg mt-6 transition-colors duration-300">Masuk Sekarang 🚀</button>
         </form>
-        <p class="text-center mt-8 text-sm text-gray-500 font-medium z-10">Belum punya akses? <a href="#" onclick="app.navigate('register')" class="text-gold font-bold">Daftar Tim</a></p>
-    </div>
 
+        <p id="login-register-link" class="text-center mt-8 text-sm text-gray-500 font-medium z-10">Belum punya akses? <a href="#" onclick="app.navigate('register')" class="text-gold font-bold">Daftar Tim</a></p>
+    </div>
     <!-- ============ REGISTER ============ -->
     <div id="view-register" class="view-section hidden p-8 flex flex-col justify-center min-h-screen bg-white">
         <h2 class="text-3xl font-extrabold text-dark mb-2 text-center">Join JICrew 👋</h2>
