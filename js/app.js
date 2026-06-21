@@ -6,23 +6,29 @@ const app = {
         else this.navigate('login');
     },
 
+    // Render ulang semua icon Lucide (panggil setiap inject HTML baru)
+    renderIcons: function() {
+        if (window.lucide) lucide.createIcons();
+    },
+
     navigate: function(viewId) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
         document.getElementById(`view-${viewId}`).classList.remove('hidden');
 
         if (viewId === 'freelancer') {
-            document.getElementById('user-name').innerText = this.state.user.nama + ' 👋';
+            document.getElementById('user-name').innerText = this.state.user.nama;
             document.getElementById('user-poin').innerText = this.state.user.poin;
             portal.switchTab('tugas');
         }
         if (viewId === 'admin') manager.switchTab('approval');
+        this.renderIcons();
     },
 
-    // MODAL HELPER
     openModal: function(title, bodyHtml) {
         document.getElementById('modal-title').innerText = title;
         document.getElementById('modal-body').innerHTML = bodyHtml;
         document.getElementById('modal').classList.remove('hidden');
+        this.renderIcons();
     },
     closeModal: function() { document.getElementById('modal').classList.add('hidden'); },
 
